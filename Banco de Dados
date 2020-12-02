@@ -1,0 +1,54 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class Banco {
+
+	public static void main(String[] args) {
+	
+		
+		try {
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+			System.out.println("Conexão Efetuada" + "\n");
+			
+			String url = "jdbc:sqlserver://localhost:53623;databaseName=Negocio_Bar;user=sa;password=sa";
+			String usuario = "sa";
+			String senha = "sa";
+			
+			Connection conexao = DriverManager.getConnection(url, usuario, senha);			
+			
+			Statement stmt = conexao.createStatement();
+			
+			
+			//stmt.executeUpdate("insert into Bebidas_Preços(Bebidas, Preço) values('Brhama Duplo Malte - Latão', '5.49') ");
+			
+			
+			ResultSet resultado = stmt.executeQuery("select * from Bebidas_Preços");
+				
+			
+			while(resultado.next()) {
+				
+				System.out.println(resultado.getString("Bebidas"));
+				System.out.println(resultado.getDouble("Preço") + "\n");
+			}
+						
+			resultado.close();
+			stmt.close();
+			conexao.close();
+			
+
+			
+			
+			
+		} catch (ClassNotFoundException e) {
+			System.out.println("Classe não encontrada!");
+		}
+		catch (SQLException ex) {
+			System.out.println("Erro de conexão");
+		}
+
+	}
+
+}
